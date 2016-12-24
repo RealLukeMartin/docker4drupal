@@ -1,0 +1,11 @@
+mariadb:
+  scale: 1
+
+php:
+  scale: 1
+
+nginx:
+  scale: 1
+
+mailhog:
+  scale: 1

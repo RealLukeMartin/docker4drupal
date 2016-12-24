@@ -13,7 +13,9 @@ services:
 #      - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
 
   php:
+    tty: true
     image: wodby/drupal-php:7.0-1.0.0
+    stdin_open: true
 #    image: wodby/drupal-php:5.6-1.0.0
     environment:
       PHP_SITE_NAME: dev
@@ -24,32 +26,25 @@ services:
       # PHP_XDEBUG_AUTOSTART: 1
       # PHP_XDEBUG_REMOTE_CONNECT_BACK: 0         # This is needed to respect remote.host setting bellow
       # PHP_XDEBUG_REMOTE_HOST: "10.254.254.254"  # You will also need to 'sudo ifconfig lo0 alias 10.254.254.254'
-    volumes:
-      - ./:/var/www/html
+    # volumes:
+    #   - /var/www:/var/www/html
 #      - d4d-unison-sync:/var/www/html:rw # Replace volume to this to use docker-sync for macOS users
 
   nginx:
+    tty: true
     image: wodby/drupal-nginx:1.0.0
+    stdin_open: true
     environment:
       NGINX_SERVER_NAME: localhost
       NGINX_UPSTREAM_NAME: php
 #      NGINX_DOCROOT: web # Relative path inside the /var/www/html/ directory.
       DRUPAL_VERSION: 8 # Allowed: 7, 8.
-    volumes_from:
-      - php
+    # labels:
+    #   io.rancher.sidekicks: php
+    # volumes_from:
+    #   - phpdata
     ports:
       - "8000:80"
-
-  pma:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOST: mariadb
-      PMA_USER: drupal
-      PMA_PASSWORD: drupal
-      PHP_UPLOAD_MAX_FILESIZE: 1G
-      PHP_MAX_INPUT_VARS: 1G
-    ports:
-     - "8001:80"
 
   mailhog:
     image: mailhog/mailhog
