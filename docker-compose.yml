@@ -11,7 +11,7 @@ services:
 
   phpdata:
     tty: true
-    image: reallukemartin/drupal-php:0.0.3
+    image: wodby/drupal-php:7.0-1.0.0
     stdin_open: true
     environment:
       PHP_SITE_NAME: dev
